@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.twinkle.mapper.BookMapper">
+	<update id="editBook">
+		update book
+		<trim prefix="set" suffixOverrides=",">
+			<if test="name != null">
+				book_name = #{name},
+			</if>
+			<if test="isbn != null">
+				book_isbn = #{isbn},
+			</if>
+			<if test="press != null">
+				book_press = #{press},
+			</if>
+			<if test="author != null">
+				book_author = #{author},
+			</if>
+			<if test="pagination != null">
+				book_pagination = #{pagination},
+			</if>
+			<if test="price != null">
+				book_price = #{price},
+			</if>
+			<if test="uploadTime != null">
+				book_uploadTime = #{uploadTime},
+			</if>
+			<if test="status != null">
+				book_status = #{status},
+			</if>
+			<if test="borrower != null">
+				book_borrower = #{borrower},
+			</if>
+			<if test="borrowTime != null">
+				book_borrowTime = #{borrowTime},
+			</if>
+			<if test="returnTime != null">
+				book_returnTime = #{returnTime}
+			</if>
+		</trim>
+		where book_id = #{id}
+	</update>
+	
+
+	
+	<!-- 搜索图书功能非注解实现 -->
+	<!-- 
+	<resultMap type="com.twinkle.domain.Book" id="bookMap2">
+		<id column = "book_id" property = "id"/>
+		<result column = "book_name" property = "name"/>
+		<result column = "book_isbn" property = "isbn"/>
+		<result column = "book_press" property = "press"/>
+		<result column = "book_author" property = "author"/>
+		<result column = "book_pagination" property = "pagination"/>
+		<result column = "book_price" property = "price"/>
+		<result column = "book_uploadTime" property = "uploadTime"/>
+		<result column = "book_status" property = "status"/>
+		<result column = "book_borrower" property = "borrower"/>
+		<result column = "book_borrowTime" property = "borrowTime"/>
+		<result column = "book_returnTime" property = "returnTime"/>
+	</resultMap> 
+
+	<select id="searchBooks" parameterType="com.twinkle.domain.Book" resultMap="bookMap2">
+		SELECT * FROM book where book_status !='3'
+		<if test="name != null"> 
+			AND  book_name  like  CONCAT('%',#{name},'%')
+		</if>
+		<if test="press != null"> 
+			AND book_press like  CONCAT('%', #{press},'%') 
+		</if>
+        <if test="author != null"> 
+        	AND book_author like  CONCAT('%', #{author},'%')
+        </if>
+        order by book_borrowtime
+	</select>
+	-->
+	 
+	
+</mapper>
