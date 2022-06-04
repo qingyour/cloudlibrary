@@ -1,6 +1,7 @@
 package com.twinkle.service;
 
 import com.twinkle.domain.Book;
+import com.twinkle.domain.User;
 import com.twinkle.entity.PageResult;
 
 public interface BookService {
@@ -18,4 +19,7 @@ public interface BookService {
 	
 	//编辑图书
 	Integer editBook(Book book);
+	
+	//查询当前借阅的图书
+	PageResult searchBorrowed(Book book,User user,Integer pageNum,Integer pageSize);
 }

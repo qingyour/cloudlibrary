@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Select;
 
 import com.github.pagehelper.Page;
 import com.twinkle.domain.Book;
+import com.twinkle.domain.User;
+import com.twinkle.entity.PageResult;
 
 public interface BookMapper {
 	@Select("select * from book where book_status !='3' order by book_uploadtime DESC")
@@ -50,6 +52,12 @@ public interface BookMapper {
 	
 //	新增图书
 	Integer addBook(Book book);
+	
+	//查询所有借阅但未归还的图书和所有待确认归还的图书
+	Page<Book> selectBorrowed(Book book);
+	
+	//查询我的借阅但未归还的图书
+	Page<Book> selectMyBorrowed(Book book);
 
 	
 	

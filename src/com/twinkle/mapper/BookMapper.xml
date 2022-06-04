@@ -45,7 +45,7 @@
 
 	
 	<!-- 搜索图书功能非注解实现 -->
-	<!-- 
+	 
 	<resultMap type="com.twinkle.domain.Book" id="bookMap2">
 		<id column = "book_id" property = "id"/>
 		<result column = "book_name" property = "name"/>
@@ -60,7 +60,7 @@
 		<result column = "book_borrowTime" property = "borrowTime"/>
 		<result column = "book_returnTime" property = "returnTime"/>
 	</resultMap> 
-
+<!--
 	<select id="searchBooks" parameterType="com.twinkle.domain.Book" resultMap="bookMap2">
 		SELECT * FROM book where book_status !='3'
 		<if test="name != null"> 
@@ -75,6 +75,46 @@
         order by book_borrowtime
 	</select>
 	-->
+	
+	<select id="selectBorrowed" parameterType="com.twinkle.domain.Book" resultMap="bookMap2">
+		select * from book where book_borrower=#{borrower} and book_status = '1'
+		<if test="name != null">
+			And book_name like concat('%',#{name},'%')
+		</if>
+		<if test="press != null">
+			And book_press like concat('%',#{press},'%')
+		</if>
+		<if test="author != null">
+			And book_author like concat('%',#{author},'%')
+		</if>
+		or book_status = '2'
+		<if test="name != null">
+			And book_name like concat('%',#{name},'%')
+		</if>
+		<if test="press != null">
+			And book_press like concat('%',#{press},'%')
+		</if>
+		<if test="author != null">
+			And book_author like concat('%',#{author},'%')
+		</if>
+		order by book_borrowtime
+	</select>
+	
+	<select id="selectMyBorrowed" parameterType="com.twinkle.domain.Book" resultMap="bookMap2">
+		select * from book where book_borrower=#{borrower} and book_status in('1','2')
+		<if test="name != null">
+			And book_name like concat('%',#{name},'%')
+		</if>
+		<if test="press != null">
+			And book_press like concat('%',#{press},'%')
+		</if>
+		<if test="author != null">
+			And book_author like concat('%',#{author},'%')
+		</if>
+		order by book_borrowtime
+	</select>
+	
+	
 	
 	<insert id="addBook" parameterType="com.twinkle.domain.Book">
 		insert into book

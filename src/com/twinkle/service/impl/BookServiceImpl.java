@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.twinkle.domain.Book;
+import com.twinkle.domain.User;
 import com.twinkle.entity.PageResult;
 import com.twinkle.mapper.BookMapper;
 import com.twinkle.service.BookService;
@@ -64,6 +65,24 @@ public class BookServiceImpl implements BookService {
 	public Integer editBook(Book book) {
 		// TODO Auto-generated method stub
 		return bookMapper.editBook(book);
+	}
+	
+	
+	@Override
+	public PageResult searchBorrowed(Book book, User user, Integer pageNum, Integer pageSize) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(pageNum,pageSize);
+		Page<Book> page;
+		book.setBorrower(user.getName());
+		
+		if("ADMIN".equals(user.getRole())){
+			page = bookMapper.selectBorrowed(book);
+		}else{
+			page = bookMapper.selectMyBorrowed(book);
+		}
+		
+		
+		return new PageResult(page.getTotal(),page.getResult());
 	}
 
 }

@@ -92,7 +92,7 @@ public class BookController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("addBook")
+	@RequestMapping("/addBook")
 	public Result addBook(Book book){
 		try {
 			Integer count = bookService.addBook(book);
@@ -109,13 +109,12 @@ public class BookController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("editBook")
+	@RequestMapping("/editBook")
 	public Result editBook(Book book){
 		try {
 			Integer count = bookService.editBook(book);
 			if(count!=1){
 				return new Result(false,"编辑图书失败");
-				
 			}
 			return new Result(true,"编辑图书成功");
 		} catch (Exception e) {
@@ -123,6 +122,28 @@ public class BookController {
 			//系统错误
 			return new Result(false,"编辑图书失败!");
 		}
+	}
+	
+	@RequestMapping("searchBorrowed")
+	public ModelAndView searchBorrowed(Book book,Integer pageNum, Integer pageSize,HttpServletRequest request){
+		//当前页
+		if(pageNum == null){
+			pageNum = 1;
+		}
+		//一页显示多少行数据
+		if(pageSize == null){
+			pageSize = 10;
+		}
+		//获取当前用户
+		User user =(User)request.getSession().getAttribute("USER_SESSION");
+		PageResult pageResult = bookService.searchBorrowed(book, user, pageNum, pageSize);
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("book_borrowed");
+		modelAndView.addObject("pageResult",pageResult);
+		modelAndView.addObject("search",book);
+		modelAndView.addObject("pageNum",pageNum);
+		modelAndView.addObject("gourl",request.getRequestURI());
+		return modelAndView;
 	}
 	
 	
