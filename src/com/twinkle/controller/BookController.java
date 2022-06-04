@@ -22,7 +22,7 @@ public class BookController {
 	@Autowired
 	private BookService bookService;
 	
-	@RequestMapping("selectNewbooks")
+	@RequestMapping("/selectNewbooks")
 	public ModelAndView selectNewbooks(){
 		 //查询最新上架的5个的图书信息
 		int pageNum = 1;
@@ -124,7 +124,7 @@ public class BookController {
 		}
 	}
 	
-	@RequestMapping("searchBorrowed")
+	@RequestMapping("/searchBorrowed")
 	public ModelAndView searchBorrowed(Book book,Integer pageNum, Integer pageSize,HttpServletRequest request){
 		//当前页
 		if(pageNum == null){
@@ -144,6 +144,27 @@ public class BookController {
 		modelAndView.addObject("pageNum",pageNum);
 		modelAndView.addObject("gourl",request.getRequestURI());
 		return modelAndView;
+	}
+	@ResponseBody
+	@RequestMapping("/returnBook")
+	public Result returnBook(String id,HttpSession session){
+		//0. 前端已经把id传过来了
+		System.out.println("当前的图书id为:"+id);
+			
+		//1.获取当前登录的用户 
+		User user =(User)session.getAttribute("USER_SESSION");
+		try {
+			boolean flag = bookService.returnBook(id, user);
+			if(!flag){
+				return new Result(false,"归还图书失败");
+			}
+			
+			return new Result(true,"还书确认中，请先到行政中心还书！");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new Result(false,"归还图书失败");
+		}
 	}
 	
 	

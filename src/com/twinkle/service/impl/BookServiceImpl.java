@@ -84,5 +84,22 @@ public class BookServiceImpl implements BookService {
 		
 		return new PageResult(page.getTotal(),page.getResult());
 	}
+	
+	
+	@Override
+	public boolean returnBook(String id, User user) {
+		//1.找出是哪一本书
+		Book book = this.findById(id);
+		//2. 二次核对借书人和还书人是否相同
+		boolean hd = book.getBorrower().equals(user.getName());
+		//3.如果一致
+		if(hd){
+			//3.1 改变书的状态 并更改数据库的内容
+			book.setStatus("2");
+			bookMapper.editBook(book);
+		}
+		//4.返回结果
+		return hd;
+	}
 
 }

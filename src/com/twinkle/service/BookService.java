@@ -22,4 +22,6 @@ public interface BookService {
 	
 	//查询当前借阅的图书
 	PageResult searchBorrowed(Book book,User user,Integer pageNum,Integer pageSize);
+	
+	boolean returnBook(String id,User user);
 }
