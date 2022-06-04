@@ -15,4 +15,7 @@ public interface BookService {
 	
 	//ÃÌº”Õº È
 	Integer addBook(Book book);
+	
+	//±‡º≠Õº È
+	Integer editBook(Book book);
 }

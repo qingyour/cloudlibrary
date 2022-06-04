@@ -59,5 +59,11 @@ public class BookServiceImpl implements BookService {
 		book.setUploadTime(dateFormat.format(new Date()));
 		return bookMapper.addBook(book);
 	}
+	
+	@Override
+	public Integer editBook(Book book) {
+		// TODO Auto-generated method stub
+		return bookMapper.editBook(book);
+	}
 
 }

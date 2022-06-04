@@ -50,6 +50,7 @@ public interface BookMapper {
 	
 //	ĞÂÔöÍ¼Êé
 	Integer addBook(Book book);
+
 	
 	
 	
