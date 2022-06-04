@@ -89,7 +89,23 @@ public class BookController {
 		modelAndView.addObject("gourl",request.getRequestURI());
 		return modelAndView;
 		
-		
+	}
+	
+	@ResponseBody
+	@RequestMapping("addBook")
+	public Result addBook(Book book){
+		try {
+			Integer count = bookService.addBook(book);
+			if(count!=1){
+				return new Result(false,"添加图书失败");
+				
+			}
+			return new Result(true,"添加图书成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			//系统错误
+			return new Result(false,"添加图书失败!");
+		}
 		
 	}
 	

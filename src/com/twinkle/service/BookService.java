@@ -12,5 +12,7 @@ public interface BookService {
 	
 	//分页查询图书
 	PageResult search(Book book, Integer pageNum, Integer pageSize);
-
+	
+	//添加图书
+	Integer addBook(Book book);
 }

@@ -48,5 +48,10 @@ public interface BookMapper {
     Page<Book> searchBooks(Book book);
 	
 	
+//	ĞÂÔöÍ¼Êé
+	Integer addBook(Book book);
+	
+	
+	
 	
 }

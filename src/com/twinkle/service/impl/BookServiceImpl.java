@@ -52,5 +52,12 @@ public class BookServiceImpl implements BookService {
 		// 将查询出的记录总数和数据集封装到PageResult对象中返回
 		return new PageResult(page.getTotal(),page.getResult());
 	}
+	
+	@Override
+	public Integer addBook(Book book) {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		book.setUploadTime(dateFormat.format(new Date()));
+		return bookMapper.addBook(book);
+	}
 
 }

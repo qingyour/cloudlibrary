@@ -75,6 +75,18 @@
         order by book_borrowtime
 	</select>
 	-->
+	
+	<insert id="addBook" parameterType="com.twinkle.domain.Book">
+		insert into book
+		(book_id,book_name,book_isbn,book_press,book_author,
+		book_pagination,book_price,book_uploadTime,book_status,
+		book_borrower,book_borrowTime,book_returnTime)
+		values
+		(#{id},#{name},#{isbn},#{press},#{author},
+		#{pagination},#{price},#{uploadTime},#{status},
+		#{borrower},#{borrowTime},#{returnTime})
+	</insert>
+	
 	 
 	
 </mapper>
