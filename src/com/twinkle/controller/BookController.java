@@ -145,6 +145,7 @@ public class BookController {
 		modelAndView.addObject("gourl",request.getRequestURI());
 		return modelAndView;
 	}
+	
 	@ResponseBody
 	@RequestMapping("/returnBook")
 	public Result returnBook(String id,HttpSession session){
@@ -164,6 +165,22 @@ public class BookController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return new Result(false,"归还图书失败");
+		}
+	}
+	@ResponseBody
+	@RequestMapping("/returnConfirm")
+	public Result returnConfirm(String id){
+
+		try {
+			Integer count = bookService.returnConfirm(id);
+			if(count!=1){
+				return new Result(false,"确认失败");
+			}
+			return new Result(true,"确认成功");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new Result(false,"确认失败");
 		}
 	}
 	

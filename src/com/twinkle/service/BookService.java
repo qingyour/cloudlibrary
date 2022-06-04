@@ -24,4 +24,6 @@ public interface BookService {
 	PageResult searchBorrowed(Book book,User user,Integer pageNum,Integer pageSize);
 	
 	boolean returnBook(String id,User user);
+	
+	Integer returnConfirm(String id);
 }

@@ -101,5 +101,19 @@ public class BookServiceImpl implements BookService {
 		//4.返回结果
 		return hd;
 	}
+	@Override
+	public Integer returnConfirm(String id) {
+		//1.根据图书id 查询图书的完整信息
+		Book book = this.findById(id);
+		//2.将图书的借阅状态修改为可借阅0
+		book.setStatus("0");
+		//3.清楚借阅人和借阅时间以及预计归还时间的信息
+		book.setBorrower("");
+		book.setBorrowTime("");
+		book.setReturnTime("");
+		
+		//4.修改图书信息
+		return bookMapper.editBook(book);
+	}
 
 }
