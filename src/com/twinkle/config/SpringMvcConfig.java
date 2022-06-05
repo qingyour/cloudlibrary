@@ -2,8 +2,11 @@ package com.twinkle.config;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.validation.MessageCodesResolver;
@@ -26,9 +29,27 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.twinkle.interceptor.ResourcesInterceptor;
 
 @Configuration
+@PropertySource("classpath:ignoreUrl.properties")
 @ComponentScan({"com.twinkle.controller"})
 @EnableWebMvc
 public class SpringMvcConfig implements WebMvcConfigurer{
+	
+	@Value("#{'${ignoreUrl}'.split(',')}")
+	private List<String> ignoreUrl;
+	
+	@Bean
+	public ResourcesInterceptor resourcesInterceptor(){
+		return new ResourcesInterceptor(ignoreUrl);
+	}
+	// 在拦截器注册类中添加自定义拦截器。addPathPatterns()方法设置
+	// 拦截的路径；excludePathPatterns()方法设置不拦截的路径
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+	    registry.addInterceptor(resourcesInterceptor())
+	    	.addPathPatterns("/**")
+	    	.excludePathPatterns("/css/**","/js/**","/img/**");
+	}
+	
 	
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
@@ -63,14 +84,7 @@ public class SpringMvcConfig implements WebMvcConfigurer{
 		// TODO Auto-generated method stub
 		
 	}
-	// 在拦截器注册类中添加自定义拦截器。addPathPatterns()方法设置
-	// 拦截的路径；excludePathPatterns()方法设置不拦截的路径
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-	    registry.addInterceptor(new ResourcesInterceptor())
-	    	.addPathPatterns("/**")
-	    	.excludePathPatterns("/css/**","/js/**","/img/**");
-	}
+	
 
 
 	@Override

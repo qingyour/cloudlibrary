@@ -27,7 +27,8 @@ public class RecordServiceImpl implements RecordService {
 	public PageResult searchRecords(Record record, User user, Integer pageNum, Integer pageSize) {
 		//设置分页的参数 开始分页
 		PageHelper.startPage(pageNum,pageSize);
-		if("ADMIN".equals(user.getRole())){
+		//如果不是管理员，则查询当前借阅的人
+		if(!"ADMIN".equals(user.getRole())){
 			record.setBorrower(user.getName());
 		}
 		Page<Record> page = recordMapper.searchRecords(record);
