@@ -11,10 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.twinkle.domain.Book;
+import com.twinkle.domain.Record;
 import com.twinkle.domain.User;
 import com.twinkle.entity.PageResult;
 import com.twinkle.mapper.BookMapper;
 import com.twinkle.service.BookService;
+import com.twinkle.service.RecordService;
 
 @Service
 @Transactional
@@ -101,10 +103,18 @@ public class BookServiceImpl implements BookService {
 		//4.返回结果
 		return hd;
 	}
+	
+	@Autowired
+	private RecordService recordService;
+	
+	//归还确认
 	@Override
 	public Integer returnConfirm(String id) {
 		//1.根据图书id 查询图书的完整信息
 		Book book = this.findById(id);
+		
+		Record record = this.setRecord(book);
+		
 		//2.将图书的借阅状态修改为可借阅0
 		book.setStatus("0");
 		//3.清楚借阅人和借阅时间以及预计归还时间的信息
@@ -112,8 +122,34 @@ public class BookServiceImpl implements BookService {
 		book.setBorrowTime("");
 		book.setReturnTime("");
 		
+		// 5. 查看是否修改成功
+		Integer count = bookMapper.editBook(book);
+		if(count==1){
+			return recordService.addRecord(record);
+		}
+		return 0;
+		
+		/*
 		//4.修改图书信息
 		return bookMapper.editBook(book);
+		*/
 	}
+	
+	private Record setRecord(Book book){
+		Record record = new Record();
+		record.setBookname(book.getName());
+		record.setBookisbn(book.getIsbn());
+		record.setBorrower(book.getBorrower());
+		record.setBorrowTime(book.getBorrowTime());
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		record.setRemandTime(dateFormat.format(new Date()));
+		return record;
+	}
+	
+	
+	
+	
+	
+	
 
 }
