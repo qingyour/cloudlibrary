@@ -10,5 +10,22 @@
 		#{id},#{bookname},#{bookisbn},#{borrower},
 		#{borrowTime},#{remandTime})
 	</insert>
-
+	<resultMap type="com.twinkle.domain.Record" id="recordMap">
+		<id column = "record_id" property = "id"/>
+		<result column = "record_bookname" property = "bookname"/>
+		<result column = "record_bookisbn" property = "bookisbn"/>
+		<result column = "record_borrower" property = "borrower"/>
+		<result column = "record_borrowtime" property = "borrowTime"/>
+		<result column = "record_remandtime" property = "remandTime"/>
+	</resultMap>
+	<select id="searchRecords" parameterType="com.twinkle.domain.Record" resultMap="recordMap">
+		select * from record where 1=1
+		<if test="borrower != null">
+			AND record_borrower like concat('%',#{borrower},'%') 
+		</if>
+		<if test="bookname != null">
+			AND record_bookname like concat('%',#{bookname},'%') 
+		</if>
+		order by record_remandtime DESC 
+	</select>
 </mapper>
